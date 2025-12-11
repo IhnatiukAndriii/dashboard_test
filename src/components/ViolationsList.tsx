@@ -35,9 +35,34 @@ export function ViolationsList({ violations }: Props) {
 
   if (violations.length === 0) {
     return (
-      <div className="text-center py-12">
-        <p className="text-gray-400 text-lg">No violations found</p>
-        <p className="text-gray-500 text-sm mt-2">All clear!</p>
+      <div className="bg-[#1e2433] rounded-lg p-8">
+        <div className="mb-6">
+          <h2 className="text-xl font-semibold text-white mb-2">Violation Tracker</h2>
+          <p className="text-gray-500 text-sm">0 issues found</p>
+        </div>
+        <div className="flex gap-4 mb-6">
+          <select className="bg-[#151a24] border border-gray-700 text-gray-300 px-4 py-2.5 rounded-lg text-sm focus:outline-none focus:border-gray-600">
+            <option>All Time</option>
+          </select>
+          <select className="bg-[#151a24] border border-gray-700 text-gray-300 px-4 py-2.5 rounded-lg text-sm focus:outline-none focus:border-gray-600">
+            <option>All Statuses</option>
+          </select>
+          <div className="flex-1 relative">
+            <input
+              type="text"
+              placeholder="Search by ASIN, Product, or Issue Type..."
+              className="w-full bg-[#151a24] border border-gray-700 text-gray-300 px-10 py-2.5 rounded-lg text-sm focus:outline-none focus:border-gray-600"
+            />
+            <svg className="w-5 h-5 text-gray-500 absolute left-3 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            <span className="text-gray-600 absolute right-3 top-1/2 -translate-y-1/2 text-xs">⌘ K</span>
+          </div>
+        </div>
+        <div className="text-center py-12">
+          <p className="text-gray-400 text-lg">No issues found</p>
+          <p className="text-gray-600 text-sm mt-2">Try adjusting your search or filter settings.</p>
+        </div>
       </div>
     )
   }
@@ -49,11 +74,11 @@ export function ViolationsList({ violations }: Props) {
           {violations.map((violation) => (
             <div
               key={violation.violationId}
-              className="bg-gray-800 rounded-lg p-4"
+              className="bg-[#1e2433] rounded-lg p-4 border-l-4 border-orange-500"
             >
               <div className="flex justify-between items-start mb-3">
                 <span className="text-xs text-gray-400 font-mono">{violation.asin}</span>
-                <span className={`px-2 py-1 text-xs rounded ${getStatusColor(violation.status)}`}>
+                <span className={`px-2.5 py-1 text-xs rounded-full ${getStatusColor(violation.status)}`}>
                   {violation.status}
                 </span>
               </div>
@@ -77,7 +102,7 @@ export function ViolationsList({ violations }: Props) {
 
               <button
                 onClick={() => setSelectedViolation(violation)}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 rounded-lg transition-colors"
+                className="w-full bg-orange-500 hover:bg-orange-600 text-white font-medium py-3 rounded-lg transition-colors"
                 style={{ minHeight: '48px' }}
               >
                 View Details
@@ -98,46 +123,77 @@ export function ViolationsList({ violations }: Props) {
 
   return (
     <>
-      <div className="overflow-x-auto">
-        <table className="w-full">
-          <thead className="bg-gray-800">
-            <tr>
-              <th className="px-4 py-3 text-left text-sm font-medium text-gray-400">ASIN</th>
-              <th className="px-4 py-3 text-left text-sm font-medium text-gray-400">Product</th>
-              <th className="px-4 py-3 text-left text-sm font-medium text-gray-400">Date</th>
-              <th className="px-4 py-3 text-left text-sm font-medium text-gray-400">At Risk</th>
-              <th className="px-4 py-3 text-left text-sm font-medium text-gray-400">Status</th>
-              <th className="px-4 py-3 text-left text-sm font-medium text-gray-400">Action</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-700">
-            {violations.map((violation) => (
-              <tr key={violation.violationId} className="hover:bg-gray-800/50">
-                <td className="px-4 py-3 text-sm text-gray-300 font-mono">{violation.asin}</td>
-                <td className="px-4 py-3 text-sm text-white max-w-md truncate">
-                  {violation.productTitle}
-                </td>
-                <td className="px-4 py-3 text-sm text-gray-400">{violation.date}</td>
-                <td className={`px-4 py-3 text-sm font-bold ${getSalesColor(violation.atRiskSales)}`}>
-                  ${violation.atRiskSales.toLocaleString()}
-                </td>
-                <td className="px-4 py-3">
-                  <span className={`px-2 py-1 text-xs rounded ${getStatusColor(violation.status)}`}>
-                    {violation.status}
-                  </span>
-                </td>
-                <td className="px-4 py-3">
-                  <button
-                    onClick={() => setSelectedViolation(violation)}
-                    className="bg-blue-600 hover:bg-blue-700 text-white text-sm px-4 py-2 rounded"
-                  >
-                    View
-                  </button>
-                </td>
+      <div className="bg-[#1e2433] rounded-lg p-6">
+        <div className="mb-6 flex justify-between items-center">
+          <div>
+            <h2 className="text-xl font-semibold text-white mb-2">Violation Tracker</h2>
+            <p className="text-gray-500 text-sm">{violations.length} issues found</p>
+          </div>
+          <div className="flex gap-3">
+            <div className="relative">
+              <input
+                type="text"
+                placeholder="Search ASIN or Product..."
+                className="bg-[#151a24] border border-gray-700 text-gray-300 pl-10 pr-4 py-2 rounded-lg text-sm focus:outline-none focus:border-gray-600 w-64"
+              />
+              <svg className="w-4 h-4 text-gray-500 absolute left-3 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </div>
+            <button className="flex items-center gap-2 bg-[#151a24] border border-gray-700 text-gray-300 px-4 py-2 rounded-lg text-sm hover:border-gray-600">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z\" />\n              </svg>\n              All Statuses\n            </button>
+          </div>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead className="border-b border-gray-700">
+              <tr>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">PRODUCT</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ISSUE TYPE</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">$ AT RISK</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">IMPACT</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">STATUS</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <svg className="w-4 h-4 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                  {' '}OPENED
+                </th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ACTION</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="divide-y divide-gray-800">
+              {violations.map((violation) => (
+                <tr key={violation.violationId} className="hover:bg-gray-800/30">
+                  <td className="px-4 py-4">
+                    <div className="text-sm text-white font-medium max-w-md truncate">{violation.productTitle}</div>
+                    <div className="text-xs text-gray-500 font-mono mt-1">{violation.asin}</div>
+                  </td>
+                  <td className="px-4 py-4 text-sm text-gray-300">{violation.reason}</td>
+                  <td className={`px-4 py-4 text-sm font-semibold ${getSalesColor(violation.atRiskSales)}`}>
+                    ${violation.atRiskSales.toLocaleString()}
+                  </td>
+                  <td className="px-4 py-4 text-sm text-gray-300">{violation.ahrImpact}</td>
+                  <td className="px-4 py-4">
+                    <span className={`px-2.5 py-1 text-xs rounded-full ${getStatusColor(violation.status)}`}>
+                      {violation.status}
+                    </span>
+                  </td>
+                  <td className="px-4 py-4 text-sm text-gray-400">{violation.date}</td>
+                  <td className="px-4 py-4">
+                    <button
+                      onClick={() => setSelectedViolation(violation)}
+                      className="text-blue-400 hover:text-blue-300 text-sm font-medium"
+                    >
+                      View
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       {selectedViolation && (
