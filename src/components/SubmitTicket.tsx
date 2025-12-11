@@ -23,7 +23,7 @@ export function SubmitTicket({ onClose }: SubmitTicketProps) {
     setError(null)
 
     try {
-      const { data, error: submitError } = await supabase.functions.invoke('submit-ticket', {
+      const { error: submitError } = await supabase.functions.invoke('submit-ticket', {
         body: {
           email: user?.email,
           subject,
