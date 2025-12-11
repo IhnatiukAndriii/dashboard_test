@@ -6,7 +6,8 @@ export function useSubdomain() {
   useEffect(() => {
     const hostname = window.location.hostname
 
-    if (hostname === 'localhost' || hostname === '127.0.0.1') {
+    // Localhost or Vercel preview URLs
+    if (hostname === 'localhost' || hostname === '127.0.0.1' || hostname.includes('vercel.app')) {
       const testSubdomain = localStorage.getItem('test_subdomain')
       if (testSubdomain) {
         setSubdomain(testSubdomain)
@@ -20,7 +21,7 @@ export function useSubdomain() {
     if (parts.length >= 3) {
       setSubdomain(parts[0])
     } else {
-      setSubdomain(null)
+      setSubdomain('example')
     }
   }, [])
 
