@@ -2,7 +2,7 @@ import { serve } from 'https://deno.land/std@0.168.0/http/server.ts'
 import { google } from 'npm:googleapis@118'
 
 const serviceAccount = JSON.parse(Deno.env.get('GOOGLE_SERVICE_ACCOUNT_KEY') || '{}')
-const MAPPING_SHEET_ID = '1p-J1x9B6UlaUNkULjx8YMXRpqKVaD1vRnkOjYTD1qMc'
+const MAPPING_SHEET_ID = '1ASxjV1Cb0W5exhYBi_D3hE3chUU2eUMGdR6ZDKmF_hY'
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
