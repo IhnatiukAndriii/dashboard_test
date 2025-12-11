@@ -1,36 +1,126 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Seller Centry Dashboard - Next.js Multi-Tenant
 
-## Getting Started
+Multi-tenant violation tracking dashboard with subdomain-based routing using Next.js and Supabase.
 
-First, run the development server:
+## Architecture
 
+- **Framework**: Next.js 16 with App Router
+- **Backend**: Supabase (Auth, Edge Functions, Database)
+- **Multi-tenancy**: Subdomain-based routing via middleware
+- **Styling**: Tailwind CSS
+- **Data Source**: Google Sheets API
+
+## Features
+
+- ✅ Subdomain-based multi-tenant architecture
+- ✅ Automatic client detection from subdomain
+- ✅ Google Sheets integration for violation data
+- ✅ Real-time violation tracking
+- ✅ Responsive design with orange accent theme
+
+## Setup
+
+1. **Install dependencies**:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. **Configure environment variables**:
+Copy `.env.example` to `.env.local` and fill in your Supabase credentials:
+```bash
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. **Run development server**:
+```bash
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. **Build for production**:
+```bash
+npm run build
+```
 
-## Learn More
+## Multi-Tenant Setup
 
-To learn more about Next.js, take a look at the following resources:
+### DNS Configuration
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Add a wildcard CNAME record in your DNS provider (GoDaddy):
+```
+Type: CNAME
+Name: *
+Value: cname.vercel-dns.com
+TTL: 1 Hour
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Subdomain Routing
 
-## Deploy on Vercel
+Each client gets their own subdomain:
+- `example.sellercentry.com` → Example Client
+- `alwayz-on-sale.sellercentry.com` → Alwayz On Sale Client
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The middleware automatically:
+1. Detects the subdomain from the hostname
+2. Passes it to the API route via header
+3. Fetches client configuration from Google Sheets
+4. Loads client-specific violation data
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Project Structure
+
+```
+dashboard-nextjs/
+├── app/
+│   ├── api/tenant/       # Tenant detection API
+│   ├── page.tsx          # Main dashboard
+│   └── layout.tsx        # Root layout with providers
+├── components/
+│   ├── ViolationsList.tsx
+│   ├── SummaryCards.tsx
+│   ├── SubmitTicket.tsx
+│   └── InviteUser.tsx
+├── lib/
+│   ├── contexts/
+│   │   └── TenantContext.tsx  # Multi-tenant state
+│   └── supabase/
+│       ├── client.ts     # Browser client
+│       └── server.ts     # Server client
+└── middleware.ts         # Subdomain detection
+```
+
+## Deployment
+
+### Vercel
+
+1. Push code to GitHub
+2. Connect repository to Vercel
+3. Add environment variables in Vercel dashboard
+4. Deploy
+
+### Environment Variables (Vercel)
+
+Required:
+- `NEXT_PUBLIC_SUPABASE_URL`
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+
+## Client Mapping
+
+Clients are mapped in Google Sheet (ID: `1ASxjV1Cb0W5exhYBi_D3hE3chUU2eUMGdR6ZDKmF_hY`):
+- Column A: Subdomain
+- Column D: Google Sheet ID for client data
+
+## Development
+
+```bash
+# Run dev server
+npm run dev
+
+# Build
+npm run build
+
+# Type check
+npm run type-check
+
+# Lint
+npm run lint
+```

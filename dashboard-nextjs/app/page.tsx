@@ -97,7 +97,10 @@ export default function Home() {
                   <path d="M10 2L3 7v6c0 5.25 3.75 9 7 9s7-3.75 7-9V7l-7-5z"/>
                 </svg>
               </div>
-              <span className="text-white font-bold text-lg">SELLER<br/>CENTRY</span>
+              <div className="text-white font-bold text-lg leading-tight">
+                <div>SELLER</div>
+                <div>CENTRY</div>
+              </div>
             </div>
             <div className="flex items-center gap-2 text-sm text-gray-400">
               <span className="w-2 h-2 bg-green-500 rounded-full"></span>

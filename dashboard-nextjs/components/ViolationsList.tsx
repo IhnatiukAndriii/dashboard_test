@@ -45,7 +45,15 @@ export function ViolationsList({ violations }: Props) {
               <tr key={violation.id} className="hover:bg-[#1e2433] transition-colors">
                 <td className="px-6 py-4">
                   <div className="text-white font-medium">{violation.product}</div>
-                  <div className="text-gray-400 text-sm">{violation.asin}</div>
+                  <a 
+                    href={`https://www.amazon.com/dp/${violation.asin}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-orange-500 hover:text-orange-400 text-sm"
+                    title="View on Amazon"
+                  >
+                    {violation.asin}
+                  </a>
                 </td>
                 <td className="px-6 py-4 text-gray-300">{violation.issueType}</td>
                 <td className="px-6 py-4 text-white font-medium">${violation.atRiskSales.toLocaleString()}</td>
